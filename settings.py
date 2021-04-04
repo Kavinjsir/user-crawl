@@ -33,5 +33,3 @@ ITEM_PIPELINES = {
 
 # MONGO_HOST = '127.0.0.1'
 # MONGO_PORT = 27017
-MONGO_URL = 'mongodb+srv://crawler:ThRZb0wCj0YHkqy6@sunday.jep2j.mongodb.net/hualuzi'
-

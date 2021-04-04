@@ -1,19 +1,21 @@
 #!/usr/bin/env python
 # encoding: utf-8
-"""
-File Description: 
-Author: nghuyong
-Mail: nghuyong@163.com
-Created Time: 2020/4/14
-"""
+
 import re
 import csv
+import os
 from scrapy import Selector, Spider
 from scrapy.http import Request
 import time
 from items import UserItem
 import pandas as pd
 
+import logging
+import boto3
+
+s3_client = boto3.client('s3')
+s3_bucket = 'weibo-test-data'
+s3_filename = os.environ.get('DOWNLOAD_FILENAME')
 
 class UserSpider(Spider):
     name = "user_spider"
@@ -21,17 +23,21 @@ class UserSpider(Spider):
 
     def start_requests(self):
         # user_ids = ['1087770692', '1699432410', '1266321801']
-        '''
-        filename = '/Users/eileen/programming/graduate/2018.csv'
-        with open(filename,'r') as csvfile:
+
+        # filename = '/Users/eileen/programming/graduate/2018.csv'
+
+        s3_client.download_file(s3_bucket, s3_filename, s3_filename)
+
+        with open(s3_filename,'r') as csvfile:
             reader = csv.reader(csvfile)
             column = [row[2] for row in reader]
-        new_list = list(set(column))
-        user_ids = new_list
+        user_ids = list(set(column))
+
         '''
-        test_df = pd.read_csv("/Users/eileen/programming/graduate/2018.csv")
+        test_df = pd.read_csv("2018.csv")
         jan = test_df[test_df['created_at'].str.match('2018-01.*')== True]
         user_ids = list(set(jan['user_id'].tolist()))
+        '''
 
         urls = [f'{self.base_url}/{user_id}/info' for user_id in user_ids]
         for url in urls:

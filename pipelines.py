@@ -7,7 +7,7 @@ from settings import MONGO_URL
 class MongoDBPipeline(object):
     def __init__(self):
         client = pymongo.MongoClient(MONGO_URL)
-        db = client['huahuo']
+        db = client['foo']
         self.Users = db["Users"]
         self.Tweets = db["Tweets"]
         self.Comments = db["Comments"]
